@@ -9,7 +9,8 @@ body {
     font-family:'Comic Sans MS', cursive;
     background: linear-gradient(to right, #ff758c, #ff7eb3);
     color:white;
-    padding:30px;
+    padding:20px;
+    overflow-x:hidden;
 }
 
 /* Loader */
@@ -27,6 +28,10 @@ button {
     cursor:pointer;
     background:white;
     color:#ff4d6d;
+    transition:0.3s;
+}
+button:hover {
+    transform:scale(1.1);
 }
 
 /* Hidden */
@@ -35,7 +40,6 @@ button {
 /* Hearts */
 .heart {
     position: fixed;
-    color: red;
     animation: float 5s linear infinite;
 }
 @keyframes float {
@@ -53,6 +57,12 @@ button {
     width:200px;
     margin:10px;
     border-radius:15px;
+    box-shadow:0 0 10px rgba(255,255,255,0.5);
+}
+
+/* Glow text */
+h1, h2 {
+    text-shadow: 0 0 10px white;
 }
 </style>
 
@@ -60,9 +70,15 @@ button {
 
 <body>
 
-<!-- LOADING SCREEN -->
+<!-- LOADER -->
 <div id="loader">
     <h2>Loading your surprise... ⏳</h2>
+</div>
+
+<!-- START SCREEN -->
+<div id="start" class="hidden">
+    <h1>🎁 A Special Surprise Awaits 💖</h1>
+    <button onclick="startGame()">Start Game 🎮</button>
 </div>
 
 <!-- MAIN GAME -->
@@ -71,7 +87,6 @@ button {
 <h1>🎮 Birthday Challenge Dharunuhh 😏</h1>
 <p>Pass this to unlock your gift 💖</p>
 
-<!-- TIMER -->
 <p>⏳ Time left: <span id="timer">30</span>s</p>
 
 <div id="quiz">
@@ -83,7 +98,7 @@ button {
 
 <div id="q2" class="hidden">
 <h3>Q2: How is Adhimahh? 😌</h3>
-<button onclick="correct2()">Caring & lovely ❤️</button>
+<button onclick="correct2()">Funny and lovely ❤️</button>
 <button onclick="wrong()">Angry 😭</button>
 <button onclick="wrong()">Okay 😒</button>
 </div>
@@ -92,11 +107,10 @@ button {
 <h3>Q3: What are you to me? 💕</h3>
 <button onclick="wrong()">Friend 😬</button>
 <button onclick="wrong()">Timepass 😑</button>
-<button onclick="correct3()">My everything ❤️</button>
+<button onclick="correct3()">My wife ❤️</button>
 </div>
 
 </div>
-
 </div>
 
 <!-- FINAL -->
@@ -104,11 +118,11 @@ button {
 
 <h1>🎉 YOU WON 💖</h1>
 
-<p>Happy Birthday Dharunuhh 🎂</p>
+<p>Happy Birthday Chellokissuhh 🎂</p>
 
 <p>That night bus ride 🚌🌙… I’ll never forget it 🥹</p>
 
-<p>You are my caring, loving, romantic idiot 😂❤️</p>
+<p>You are my puttukunjuh, Adhipah, romantic idiot 😂❤️</p>
 
 <p>Thank you for everything 💕</p>
 
@@ -119,32 +133,41 @@ button {
 <h3>Our Memories 📸</h3>
 
 <div class="gallery">
-<img src="pic1.jpg">
-<img src="pic2.jpg">
-<img src="pic3.jpg">
+<img src="d1.jpeg">
+<img src="d2.jpeg">
+<img src="d3.jpeg">
 </div>
 
 </div>
 
-<!-- CONFETTI -->
 <canvas id="confetti"></canvas>
 
 <!-- MUSIC -->
-<audio autoplay loop>
-<source src="https://www.example.com/song.mp3">
+<audio id="music" loop>
+<source src="naan_ini_kaatril.mp3.mpeg" type="audio/mpeg">
 </audio>
 
 <script>
 
-/* Loader */
+/* Loader → Start */
 setTimeout(()=>{
 document.getElementById("loader").style.display="none";
-document.getElementById("main").style.display="block";
+document.getElementById("start").style.display="block";
 },2000);
+
+/* Start Game */
+function startGame(){
+document.getElementById("start").style.display="none";
+document.getElementById("main").style.display="block";
+document.getElementById("music").play();
+startTimer();
+}
 
 /* Timer */
 let time=30;
-let timer=setInterval(()=>{
+let timer;
+function startTimer(){
+timer=setInterval(()=>{
 time--;
 document.getElementById("timer").innerText=time;
 if(time<=0){
@@ -152,6 +175,7 @@ alert("Time over 😭 Try again!");
 location.reload();
 }
 },1000);
+}
 
 /* Quiz */
 function correct1(){
@@ -189,19 +213,20 @@ canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
 
 let pieces=[];
-for(let i=0;i<100;i++){
+for(let i=0;i<150;i++){
 pieces.push({
 x:Math.random()*canvas.width,
 y:Math.random()*canvas.height,
-dy:Math.random()*5+2
+dy:Math.random()*5+2,
+color:`hsl(${Math.random()*360},100%,50%)`
 });
 }
 
 function draw(){
 ctx.clearRect(0,0,canvas.width,canvas.height);
-ctx.fillStyle="white";
 pieces.forEach(p=>{
-ctx.fillRect(p.x,p.y,5,5);
+ctx.fillStyle=p.color;
+ctx.fillRect(p.x,p.y,6,6);
 p.y+=p.dy;
 if(p.y>canvas.height)p.y=0;
 });
