@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Secret Birthday Game 💖</title>
+
+<style>
+body {
+    text-align:center;
+    font-family:'Comic Sans MS', cursive;
+    background: linear-gradient(to right, #ff758c, #ff7eb3);
+    color:white;
+    padding:30px;
+}
+
+/* Loader */
+#loader {
+    font-size:25px;
+}
+
+/* Buttons */
+button {
+    padding:12px 20px;
+    margin:10px;
+    font-size:16px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:white;
+    color:#ff4d6d;
+}
+
+/* Hidden */
+.hidden { display:none; }
+
+/* Hearts */
+.heart {
+    position: fixed;
+    color: red;
+    animation: float 5s linear infinite;
+}
+@keyframes float {
+    0% { transform: translateY(100vh); }
+    100% { transform: translateY(-10vh); }
+}
+
+/* Gallery */
+.gallery {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+.gallery img {
+    width:200px;
+    margin:10px;
+    border-radius:15px;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loader">
+    <h2>Loading your surprise... ⏳</h2>
+</div>
+
+<!-- MAIN GAME -->
+<div id="main" class="hidden">
+
+<h1>🎮 Birthday Challenge Dharunuhh 😏</h1>
+<p>Pass this to unlock your gift 💖</p>
+
+<!-- TIMER -->
+<p>⏳ Time left: <span id="timer">30</span>s</p>
+
+<div id="quiz">
+
+<h3>Q1: Our best memory? 👀</h3>
+<button onclick="wrong()">Mall</button>
+<button onclick="correct1()">Night bus travel 🚌🌙</button>
+<button onclick="wrong()">Reels</button>
+
+<div id="q2" class="hidden">
+<h3>Q2: How is Adhimahh? 😌</h3>
+<button onclick="correct2()">Caring & lovely ❤️</button>
+<button onclick="wrong()">Angry 😭</button>
+<button onclick="wrong()">Okay 😒</button>
+</div>
+
+<div id="q3" class="hidden">
+<h3>Q3: What are you to me? 💕</h3>
+<button onclick="wrong()">Friend 😬</button>
+<button onclick="wrong()">Timepass 😑</button>
+<button onclick="correct3()">My everything ❤️</button>
+</div>
+
+</div>
+
+</div>
+
+<!-- FINAL -->
+<div id="final" class="hidden">
+
+<h1>🎉 YOU WON 💖</h1>
+
+<p>Happy Birthday Dharunuhh 🎂</p>
+
+<p>That night bus ride 🚌🌙… I’ll never forget it 🥹</p>
+
+<p>You are my caring, loving, romantic idiot 😂❤️</p>
+
+<p>Thank you for everything 💕</p>
+
+<h2>You're my everything 💖</h2>
+
+<p>Love, Adhimahh 💋</p>
+
+<h3>Our Memories 📸</h3>
+
+<div class="gallery">
+<img src="pic1.jpg">
+<img src="pic2.jpg">
+<img src="pic3.jpg">
+</div>
+
+</div>
+
+<!-- CONFETTI -->
+<canvas id="confetti"></canvas>
+
+<!-- MUSIC -->
+<audio autoplay loop>
+<source src="https://www.example.com/song.mp3">
+</audio>
+
+<script>
+
+/* Loader */
+setTimeout(()=>{
+document.getElementById("loader").style.display="none";
+document.getElementById("main").style.display="block";
+},2000);
+
+/* Timer */
+let time=30;
+let timer=setInterval(()=>{
+time--;
+document.getElementById("timer").innerText=time;
+if(time<=0){
+alert("Time over 😭 Try again!");
+location.reload();
+}
+},1000);
+
+/* Quiz */
+function correct1(){
+document.getElementById("q2").style.display="block";
+}
+function correct2(){
+document.getElementById("q3").style.display="block";
+}
+function correct3(){
+clearInterval(timer);
+document.getElementById("main").style.display="none";
+document.getElementById("final").style.display="block";
+startConfetti();
+}
+function wrong(){
+alert("Wrong 😤 Try again!");
+}
+
+/* Hearts */
+setInterval(()=>{
+let h=document.createElement("div");
+h.innerHTML="💖";
+h.className="heart";
+h.style.left=Math.random()*100+"vw";
+h.style.fontSize=(20+Math.random()*20)+"px";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),5000);
+},300);
+
+/* CONFETTI */
+function startConfetti(){
+let canvas=document.getElementById("confetti");
+let ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let pieces=[];
+for(let i=0;i<100;i++){
+pieces.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+dy:Math.random()*5+2
+});
+}
+
+function draw(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle="white";
+pieces.forEach(p=>{
+ctx.fillRect(p.x,p.y,5,5);
+p.y+=p.dy;
+if(p.y>canvas.height)p.y=0;
+});
+requestAnimationFrame(draw);
+}
+draw();
+}
+
+</script>
+
+</body>
+</html>
